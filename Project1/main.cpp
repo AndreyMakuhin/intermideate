@@ -1,4 +1,5 @@
 #include <conio.h>
+#include <fstream>
 
 
 namespace andrey
@@ -82,16 +83,23 @@ namespace andrey
 
 int main()
 {
-	char msg[] = "Hello, world!";
-	char buffer[69];
-	char num[] = "1234567";
-	int look = andrey::str2int(num);
+	const int myInt = 8573949;
+	std::ofstream out("output.dat", std::ios::binary);
 
-	//read(buffer, 69);
+	out.write(reinterpret_cast<const char*>(&myInt), sizeof(myInt));
 
-	andrey::int2str(123456, buffer);
+	out.close();
+
+	int data;
+	std::ifstream in("output.dat", std::ios::binary);
+	in.read(reinterpret_cast<char*>(&data), sizeof(data));
+
+	char buffer[256];
+
+	andrey::int2str(data, buffer);
 	andrey::print(buffer);
 
+	andrey::print("\nPress space");
 	while (!_kbhit());
 
 	return 0;
